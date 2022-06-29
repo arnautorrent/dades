@@ -4,7 +4,7 @@
 
 @section('content')
 
-    <?php//TODO: Posar bonic el formulari (possibilitat de canviar els select, radio i checkboxes a les dades actuals)?>
+    <?//TODO: Posar bonic el formulari (possibilitat de canviar els select, radio i checkboxes a les dades actuals)?>
     <form action="{{ action('DiadesController@compTemp') }}" method="post">
     {{ csrf_field() }}
         <div class="columns">
@@ -64,7 +64,6 @@
             </div>
         </div>
 
-       <?php//TODO: Tots els checkbox?>
         <div class="columns">
             <div class="field column">
                 <div class="control">
@@ -98,10 +97,7 @@
         </div>
     </form>
 
-
-
-
-
+    <!-- PINTO LES TAULES AMB ELS RESULTATS -->
     <div class="columns">
        <div class="column">
            <table class="table is-bordered is-hoverable is-fullwidth">
@@ -115,7 +111,7 @@
                </tr>
                </thead>
                <tbody>
-               <?php
+               <?
                 foreach($temporada_comparar as $key => $value){
                     echo    '<tr>';
                     echo        '<th>' . $key . '</th>';
@@ -170,21 +166,21 @@
                <thead>
                <tr>
                    <th>Castell</th>
-                   <th><abbr title="Descarregat">d</th>
-                   <th><abbr title="Carregat">c</th>
-                   <th><abbr title="Intent Desmuntat">id</th>
-                   <th><abbr title="Intent">i</th>
+                   <th><abbr title="Descarregat"/>d</th>
+                   <th><abbr title="Carregat"/>c</th>
+                   <th><abbr title="Intent Desmuntat"/>id</th>
+                   <th><abbr title="Intent"/>i</th>
                </tr>
                </thead>
                <tbody>
-               <?php
+               <?
                foreach($temporada_referencia as $key => $value){
                    echo    '<tr>';
                    echo        '<th>' . $key . '</th>';
-                   echo        '<td class="base">' . $value[0] . '</td>';
-                   echo        '<td class="base">' . $value[1] . '</td>';
-                   echo        '<td class="base">' . $value[2] . '</td>';
-                   echo        '<td class="base">' . $value[3] . '</td>';
+                   echo        '<td class="">' . $value[0] . '</td>';
+                   echo        '<td class="">' . $value[1] . '</td>';
+                   echo        '<td class="">' . $value[2] . '</td>';
+                   echo        '<td class="">' . $value[3] . '</td>';
                    echo    '</tr>';
                }
                ?>

@@ -20,7 +20,7 @@ class DiadesController extends Controller
             $diades[$key]['colles'] = DB::table('diades_colles')->where('id_diada',$value['id'])->get()->toArray();
         }
 
-        if (!empty($_REQUEST)) {
+        if (isset($_REQUEST['colla'])) {
             //Mirar: Input::all()
             //Utilitzar try/catch
             //$.ajax amb jquery
@@ -93,7 +93,7 @@ class DiadesController extends Controller
     public function compTemp(){
 
         //1. Defineixo paràmetres de comparació
-        if (!empty($_REQUEST)) {
+        if (isset($_REQUEST["temporada_comparar"])) {
             $any_comparar = $_REQUEST['temporada_comparar'];
             $any_referencia = $_REQUEST['temporada_referencia'];
             if(!empty($_REQUEST['castells'])){

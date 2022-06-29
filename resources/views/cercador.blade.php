@@ -6,7 +6,7 @@
 
     <h1 class="title">FILTRE</h1>
 
-    <?php//TODO: Data, castell, resultat, lloc, ...?>
+    <?//TODO: Data, castell, resultat, lloc, ...?>
     <form action="{{ action('DiadesController@index') }}" method="post">
     {{ csrf_field() }}
 
@@ -18,7 +18,7 @@
                     <div class="select is-fullwidth">
                         <select name="colla">
                             <option value=""></option>
-                            <?php
+                            <?
                             foreach ($colles as $colla)
                                 {
                                     echo '<option value="' . $colla['id'] . '">' . $colla['nom'] . '</option>';
@@ -38,7 +38,7 @@
         </div>
     </form>
 
-    <?php
+    <?
     if (isset($diades))
     { ?>
     <h1 class="title">RESULTATS</h1>
@@ -49,7 +49,7 @@
             <th class="th">Població</th>
             <th class="th">Resultats</th>
         </tr>
-        <?php
+        <?
         foreach ($diades as $diada)
         {
             echo '<tr>';
@@ -61,7 +61,7 @@
         }
         ?>
     </table>
-    <?php
+    <?
     }
     else
     {
