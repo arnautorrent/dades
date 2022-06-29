@@ -2,8 +2,8 @@
 <project version="4">
   <component name="WebServers">
     <option name="servers">
-      <webServer id="b5b89735-3565-4ae4-9a7e-f11c8325f1f4" name="Esperxats" url="http://ftp.ccesperxats.cat">
-        <fileTransfer host="ftp.ccesperxats.cat" port="21" rootFolder="/dades">
+      <webServer id="2a474694-8faa-46e5-96ed-86f393bf871d" name="esperxats" url="http://dades.ccesperxats.cat">
+        <fileTransfer host="ftp.ccesperxats.cat" port="21">
           <advancedOptions>
             <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
           </advancedOptions>

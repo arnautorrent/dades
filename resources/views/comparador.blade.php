@@ -111,7 +111,7 @@
                </tr>
                </thead>
                <tbody>
-               <?
+               <?php
                 foreach($temporada_comparar as $key => $value){
                     echo    '<tr>';
                     echo        '<th>' . $key . '</th>';
@@ -173,7 +173,7 @@
                </tr>
                </thead>
                <tbody>
-               <?
+               <?php
                foreach($temporada_referencia as $key => $value){
                    echo    '<tr>';
                    echo        '<th>' . $key . '</th>';
