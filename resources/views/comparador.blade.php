@@ -15,7 +15,7 @@
                         <select name="temporada_comparar">
                             <?php
                             for ($i = 2012; $i < 2024; $i++){
-                                echo '<option>' + $i + '</option>'
+                                echo '<option>' + $i + '</option>';
                             }
                             ?>
                             <option>2012</option>
