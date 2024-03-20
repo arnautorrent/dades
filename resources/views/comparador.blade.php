@@ -14,22 +14,15 @@
                     <div class="select is-fullwidth">
                         <select name="temporada_comparar">
                             <?php
-                            for ($i = 2012; $i < 2024; $i++){
-                                echo '<option>' + $i + '</option>';
+                            for ($i = 2012; $i <= date("Y"); $i++){
+                                if($i == date("Y")){
+                                    echo '<option selected>' . date("Y") . '</option>';
+                                }
+                                else{
+                                    echo '<option>' . $i . '</option>';
+                                }
                             }
                             ?>
-                            <option>2012</option>
-                            <option>2013</option>
-                            <option>2014</option>
-                            <option>2015</option>
-                            <option>2016</option>
-                            <option>2017</option>
-                            <option>2018</option>
-                            <option>2019</option>
-                            <option>2020</option>
-                            <option>2021</option>
-                            <option>2022</option>
-                            <option selected>2023</option>
                         </select>
                     </div>
                 </div>
@@ -40,18 +33,16 @@
                 <div class="control">
                     <div class="select is-fullwidth">
                         <select name="temporada_referencia">
-                            <option>2012</option>
-                            <option>2013</option>
-                            <option>2014</option>
-                            <option>2015</option>
-                            <option>2016</option>
-                            <option>2017</option>
-                            <option>2018</option>
-                            <option>2019</option>
-                            <option>2020</option>
-                            <option>2021</option>
-                            <option selected>2022</option>
-                            <option>2023</option>
+                            <?php
+                            for ($i = 2012; $i < date("Y"); $i++){
+                                if($i == date("Y") - 1){
+                                    echo '<option selected>' . date("Y") - 1 . '</option>';
+                                }
+                                else{
+                                    echo '<option>' . $i . '</option>';
+                                }
+                            }
+                            ?>
                         </select>
                     </div>
                 </div>
