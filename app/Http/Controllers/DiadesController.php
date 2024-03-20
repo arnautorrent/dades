@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Castell;
 use App\Colla;
 use App\Diada;
+use App\Http\Middleware\TrimStrings;
 use Illuminate\Support\Facades\DB;
 
 
@@ -26,9 +27,16 @@ class DiadesController extends Controller
             //$.ajax amb jquery
             //FAIG UNA CERCA AMB ELS VALORS PASSATS A REQUEST I ELS AFEGEIXO A LA VISTA
             $id = $_REQUEST['colla'];
+//            $ids_diades_seleccionades =
+//                Diada::leftJoin('diades_colles', 'diades.id', '=', 'diades_colles.id_diada')
+//                ->where('id_colla', $id)
+//                ->get('diades.id')
+//                ->toArray();
             $diades = Diada::leftJoin('diades_colles', 'diades.id', '=', 'diades_colles.id_diada')->where('id_colla', $id)->get()->toArray();
             //$diades_i_resultats = Diada::leftJoin('diades_castells','diades.id', '=', 'diades_castells.id_diada')->get()->toArray();
             return view('cercador')->with('castells', $castells)->with('colles', $colles)->with('diades', $diades);
+            //TODO: Agafara tots els resultats i passar-los a un únic string. Fer-ho amb una funció
+//            return view('cercador')->with('castells', $castells)->with('colles', $colles)->with('diades', $diades_seleccionades);
         }
         else {
             return view('cercador')->with('castells', $castells)->with('colles', $colles);

@@ -39,7 +39,7 @@
     </form>
 
     <?php
-    if (isset($diades))
+    if (isset($resultats))
     { ?>
     <h1 class="title">RESULTATS</h1>
     <table class="table">
@@ -50,13 +50,15 @@
             <th class="th">Resultats</th>
         </tr>
         <?php
-        foreach ($diades as $diada)
+        foreach ($resultats as $resultat)
         {
             echo '<tr>';
-            echo    '<td>' . $diada['data'] . '</td>';
-            echo    '<td>' . $diada['diada'] . '</td>';
-            echo    '<td>' . $diada['poblacio'] . '</td>';
-            echo    '<td>' . '</td>';
+            echo    '<td>' . $resultat['data'] . '</td>';
+            echo    '<td>' . $resultat['diada'] . '</td>';
+            echo    '<td>' . $resultat['poblacio'] . '</td>';
+            echo    '<td>';
+            foreach($resultat['resultats'] as $ronda){ echo $ronda->castell . '(' . $ronda->resultat . '), ';}
+            echo '</td>';
             echo '</tr>';
         }
         ?>

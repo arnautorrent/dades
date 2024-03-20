@@ -13,6 +13,11 @@
                 <div class="control">
                     <div class="select is-fullwidth">
                         <select name="temporada_comparar">
+                            <?php
+                            for ($i = 2012; $i < 2024; $i++){
+                                echo '<option>' + $i + '</option>'
+                            }
+                            ?>
                             <option>2012</option>
                             <option>2013</option>
                             <option>2014</option>
@@ -23,7 +28,8 @@
                             <option>2019</option>
                             <option>2020</option>
                             <option>2021</option>
-                            <option selected>2022</option>
+                            <option>2022</option>
+                            <option selected>2023</option>
                         </select>
                     </div>
                 </div>
@@ -43,8 +49,9 @@
                             <option>2018</option>
                             <option>2019</option>
                             <option>2020</option>
-                            <option selected>2021</option>
-                            <option>2022</option>
+                            <option>2021</option>
+                            <option selected>2022</option>
+                            <option>2023</option>
                         </select>
                     </div>
                 </div>
