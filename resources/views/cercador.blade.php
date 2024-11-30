@@ -12,6 +12,7 @@
 
     {{--COLLA--}}
         <fieldset id="colla" class="field">
+            <label class="label">Colla:</label>
             <div class="field">
                 <label for="Colla" class="label"></label>
                 <div class="control">
@@ -39,7 +40,7 @@
     </form>
 
     <?php
-    if (isset($resultats))
+    if (isset($diades))
     { ?>
     <h1 class="title">RESULTATS</h1>
     <table class="table">
@@ -50,15 +51,13 @@
             <th class="th">Resultats</th>
         </tr>
         <?php
-        foreach ($resultats as $resultat)
+        foreach ($diades as $diada)
         {
             echo '<tr>';
-            echo    '<td>' . $resultat['data'] . '</td>';
-            echo    '<td>' . $resultat['diada'] . '</td>';
-            echo    '<td>' . $resultat['poblacio'] . '</td>';
-            echo    '<td>';
-            foreach($resultat['resultats'] as $ronda){ echo $ronda->castell . '(' . $ronda->resultat . '), ';}
-            echo '</td>';
+            echo    '<td>' . $diada['data'] . '</td>';
+            echo    '<td>' . $diada['diada'] . '</td>';
+            echo    '<td>' . $diada['poblacio'] . '</td>';
+            echo    '<td>' . '</td>';
             echo '</tr>';
         }
         ?>

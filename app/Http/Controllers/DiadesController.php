@@ -20,27 +20,17 @@ class DiadesController extends Controller
             $diades[$key]['resultats'] = DB::table('diades_castells')->where('id_diada', $value['id'])->get()->toArray();
             $diades[$key]['colles'] = DB::table('diades_colles')->where('id_diada',$value['id'])->get()->toArray();
         }
+        $diades = Diada::leftJoin('diades_colles', 'diades.id', '=', 'diades_colles.id_diada')
+            ->when(isset($_REQUEST['colla']), function($query){
+                return $query->where('id_colla',$_REQUEST['colla']);
+            })
+//             PROVA QUE FUNCIONA: AFEGIR MÉS D'UN WHEN.
+//            ->when(true, function($query){
+//                return $query->where('diades.poblacio','Banyoles');
+//            })
+            ->get()->toArray();
 
-        if (isset($_REQUEST['colla'])) {
-            //Mirar: Input::all()
-            //Utilitzar try/catch
-            //$.ajax amb jquery
-            //FAIG UNA CERCA AMB ELS VALORS PASSATS A REQUEST I ELS AFEGEIXO A LA VISTA
-            $id = $_REQUEST['colla'];
-//            $ids_diades_seleccionades =
-//                Diada::leftJoin('diades_colles', 'diades.id', '=', 'diades_colles.id_diada')
-//                ->where('id_colla', $id)
-//                ->get('diades.id')
-//                ->toArray();
-            $diades = Diada::leftJoin('diades_colles', 'diades.id', '=', 'diades_colles.id_diada')->where('id_colla', $id)->get()->toArray();
-            //$diades_i_resultats = Diada::leftJoin('diades_castells','diades.id', '=', 'diades_castells.id_diada')->get()->toArray();
-            return view('cercador')->with('castells', $castells)->with('colles', $colles)->with('diades', $diades);
-            //TODO: Agafara tots els resultats i passar-los a un únic string. Fer-ho amb una funció
-//            return view('cercador')->with('castells', $castells)->with('colles', $colles)->with('diades', $diades_seleccionades);
-        }
-        else {
-            return view('cercador')->with('castells', $castells)->with('colles', $colles);
-        }
+        return view('cercador')->with('castells', $castells)->with('colles', $colles)->with('diades', $diades);
     }
 
     public function create()
@@ -107,7 +97,7 @@ class DiadesController extends Controller
             if(!empty($_REQUEST['castells'])){
                 $castells = $_REQUEST['castells'];
             } else{
-                $castells = array('3d7','4d7','pd5','2d6','3d6ps','5d6','7d6','4d6a','3d6a','3d6','4d6','pd4ps','pd4cam','pd4bal','pd4'); //Per defecte tots els castells
+                $castells = array('5d7','4d7a','3d7','4d7','9d6','pd5','2d6','3d6ps','5d6','7d6','4d6a','3d6a','3d6','4d6','pd4ps','pd4cam','pd4bal','pd4'); //Per defecte tots els castells
             }
 
             if($_REQUEST['data'] == "avui"){
@@ -117,7 +107,7 @@ class DiadesController extends Controller
             }
 
         } else{
-            $castells = array('3d7','4d7','pd5','2d6','3d6ps','5d6','7d6','4d6a','3d6a','3d6','4d6','pd4ps','pd4cam','pd4bal','pd4'); //Per defecte tots els castells
+            $castells = array('5d7','4d7a','3d7','4d7','9d6','pd5','2d6','3d6ps','5d6','7d6','4d6a','3d6a','3d6','4d6','pd4ps','pd4cam','pd4bal','pd4'); //Per defecte tots els castells
             $any_comparar = date("Y"); //Per defecte compraro la temporada actual
             $any_referencia = date("Y") - 1; //Per defecte comparo amb la temporada anterior a la actual
             $data = date("-m-d"); //Per defecte comparo a dia d'avui

@@ -66,8 +66,11 @@
             <div class="field column">
                 <div class="control">
                     <label class="checkbox">
+                        <input type="checkbox" name="castells[]" value="5d7">5d7
+                        <input type="checkbox" name="castells[]" value="4d7a">4d7a
                         <input type="checkbox" name="castells[]" value="3d7">3d7
                         <input type="checkbox" name="castells[]" value="4d7">4d7
+                        <input type="checkbox" name="castells[]" value="9d6">9d6
                         <input type="checkbox" name="castells[]" value="pd5">pd5
                         <input type="checkbox" name="castells[]" value="2d6">2d6
                         <input type="checkbox" name="castells[]" value="3d6ps">3d6ps
