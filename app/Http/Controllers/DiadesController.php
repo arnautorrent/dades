@@ -36,7 +36,7 @@ class DiadesController extends Controller
             ->groupBy('id_diada', 'ronda', 'castell', 'resultat');
 
         //TODO: AQUÍ PODRÍA APLICAR FILTRES DE CASTELL I RESULTAT
-
+        //PROVA DE COMIT
 
         // PAS 2: Crear la subconsulta que agrupa per diada i ronda, amb el GROUP_CONCAT
         $r = DB::table(DB::raw("({$sub->toSql()}) as sub"))
