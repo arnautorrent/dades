@@ -6,29 +6,16 @@ use App\Colla;
 use App\Diada;
 use App\Http\Middleware\TrimStrings;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Request;
 
 
 class DiadesController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        //agafar totes les dades
         $colles = Colla::get(['id', 'nom'])->sortBy('nom')->values()->all();
-        //$castells = Castell::get()->sortBy('abreviatura')->pluck('abreviatura')->toArray();
-        //$diades = Diada::get()->toArray();
-        //foreach($diades as $key => $value){
-        //$diades[$key]['resultats'] = DB::table('diades_castells')->where('id_diada', $value['id'])->get()->toArray();
-        //$diades[$key]['colles'] = DB::table('diades_colles')->where('id_diada',$value['id'])->get()->toArray();
-        //}
 
-        // PAS 1: Agafar les diades bàsicament
-        $diades = DB::table('diades')
-            ->select('id', 'data', 'diada', 'poblacio')
-            ->orderBy('data', 'desc')
-            ->get();
-
-
-        // PAS 2: Crear la subconsulta interna (el 'sub' de SQL)
+        // PAS 1: Crear la subconsulta interna (el 'sub' de SQL)
         $sub = DB::table('diades_castells')
             ->select(
                 'id_diada',
@@ -48,8 +35,10 @@ class DiadesController extends Controller
             )
             ->groupBy('id_diada', 'ronda', 'castell', 'resultat');
 
+        //TODO: AQUÍ PODRÍA APLICAR FILTRES DE CASTELL I RESULTAT
 
-        // PAS 3: Crear la subconsulta que agrupa per diada i ronda, amb el GROUP_CONCAT
+
+        // PAS 2: Crear la subconsulta que agrupa per diada i ronda, amb el GROUP_CONCAT
         $r = DB::table(DB::raw("({$sub->toSql()}) as sub"))
             ->mergeBindings($sub) // Important per passar els bindings
             ->select(
@@ -68,7 +57,7 @@ class DiadesController extends Controller
             ->groupBy('id_diada', 'ronda');
 
 
-        // PAS 4: Fer el join amb diades i agrupar per diada
+        // PAS 3: Fer el join amb diades i agrupar per diada
         $result = DB::table('diades as d')
             ->leftJoin(DB::raw("({$r->toSql()}) as r"), 'd.id', '=', 'r.id_diada')
             ->mergeBindings($r) // Passar bindings també
@@ -79,11 +68,17 @@ class DiadesController extends Controller
                 'd.poblacio',
                 DB::raw("GROUP_CONCAT(r.resultat_ronda ORDER BY r.ronda SEPARATOR ' , ') AS resultats")
             )
-            ->groupBy('d.id', 'd.data', 'd.diada', 'd.poblacio')
-            ->orderBy('d.data', 'desc')
-            ->get();
+            ->groupBy('d.id', 'd.data', 'd.diada', 'd.poblacio');
+        //TODO: AQUÍ PODRÍA APLICAR FILTRES DE POBLACIÓ, DATA INICI, DATA FI I COLLA.
 
-        $diades = $result->toArray();
+        //FILTRE DE COLLA:
+        if($request->filled('colla')){
+            $result->join('diades_colles as dc', 'dc.id_diada', '=', 'd.id')
+                ->join('colles as c', 'c.id', '=', 'dc.id_colla')
+                ->where('c.id', $request->colla);
+        }
+
+        $diades = $result->orderBy('d.data', 'desc')->get()->toArray();
         return view('cercador')->with('colles', $colles)->with('diades', $diades);//->with('castells', $castells)
     }
 
