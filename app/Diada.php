@@ -20,6 +20,10 @@ class Diada extends Model
 
     //funcions:
     public function colles(){
-        return $this->belongsToMany(Diada::class,'diades_colles','id_diada','id_colla');
+        return $this->belongsToMany(Colla::class,'diades_colles','id_diada','id_colla');
     }
+    public function castells(){
+        return $this->hasMany(DiadesCastell::class, 'id_diada');
+    }
+
 }

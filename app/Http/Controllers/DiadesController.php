@@ -13,24 +13,78 @@ class DiadesController extends Controller
     public function index()
     {
         //agafar totes les dades
-        $colles = Colla::get(['id', 'nom'])->sortBy('nom')->toArray();
-        $castells = Castell::get()->sortBy('abreviatura')->pluck('abreviatura')->toArray();
-        $diades = Diada::get()->toArray();
-        foreach($diades as $key => $value){
-            $diades[$key]['resultats'] = DB::table('diades_castells')->where('id_diada', $value['id'])->get()->toArray();
-            $diades[$key]['colles'] = DB::table('diades_colles')->where('id_diada',$value['id'])->get()->toArray();
-        }
-        $diades = Diada::leftJoin('diades_colles', 'diades.id', '=', 'diades_colles.id_diada')
-            ->when(isset($_REQUEST['colla']), function($query){
-                return $query->where('id_colla',$_REQUEST['colla']);
-            })
-//             PROVA QUE FUNCIONA: AFEGIR MÉS D'UN WHEN.
-//            ->when(true, function($query){
-//                return $query->where('diades.poblacio','Banyoles');
-//            })
-            ->get()->toArray();
+        $colles = Colla::get(['id', 'nom'])->sortBy('nom')->values()->all();
+        //$castells = Castell::get()->sortBy('abreviatura')->pluck('abreviatura')->toArray();
+        //$diades = Diada::get()->toArray();
+        //foreach($diades as $key => $value){
+        //$diades[$key]['resultats'] = DB::table('diades_castells')->where('id_diada', $value['id'])->get()->toArray();
+        //$diades[$key]['colles'] = DB::table('diades_colles')->where('id_diada',$value['id'])->get()->toArray();
+        //}
 
-        return view('cercador')->with('castells', $castells)->with('colles', $colles)->with('diades', $diades);
+        // PAS 1: Agafar les diades bàsicament
+        $diades = DB::table('diades')
+            ->select('id', 'data', 'diada', 'poblacio')
+            ->orderBy('data', 'desc')
+            ->get();
+
+
+        // PAS 2: Crear la subconsulta interna (el 'sub' de SQL)
+        $sub = DB::table('diades_castells')
+            ->select(
+                'id_diada',
+                'ronda',
+                'castell',
+                'resultat',
+                DB::raw('COUNT(*) as compta'),
+                DB::raw("
+                CASE
+                    WHEN resultat = 'd' THEN castell
+                    WHEN resultat = 'c' THEN CONCAT(castell, '(c)')
+                    WHEN resultat = 'id' THEN CONCAT(castell, '(id)')
+                    WHEN resultat = 'i' THEN CONCAT(castell, '(i)')
+                    ELSE CONCAT(castell, '(', resultat, ')')
+                END AS castell_sufix
+            ")
+            )
+            ->groupBy('id_diada', 'ronda', 'castell', 'resultat');
+
+
+        // PAS 3: Crear la subconsulta que agrupa per diada i ronda, amb el GROUP_CONCAT
+        $r = DB::table(DB::raw("({$sub->toSql()}) as sub"))
+            ->mergeBindings($sub) // Important per passar els bindings
+            ->select(
+                'id_diada',
+                'ronda',
+                DB::raw("
+                GROUP_CONCAT(
+                    CASE
+                        WHEN compta = 1 THEN castell_sufix
+                        ELSE CONCAT(compta, castell_sufix)
+                    END
+                    SEPARATOR ' + '
+                ) AS resultat_ronda
+            ")
+            )
+            ->groupBy('id_diada', 'ronda');
+
+
+        // PAS 4: Fer el join amb diades i agrupar per diada
+        $result = DB::table('diades as d')
+            ->leftJoin(DB::raw("({$r->toSql()}) as r"), 'd.id', '=', 'r.id_diada')
+            ->mergeBindings($r) // Passar bindings també
+            ->select(
+                'd.id',
+                'd.data',
+                'd.diada',
+                'd.poblacio',
+                DB::raw("GROUP_CONCAT(r.resultat_ronda ORDER BY r.ronda SEPARATOR ' , ') AS resultats")
+            )
+            ->groupBy('d.id', 'd.data', 'd.diada', 'd.poblacio')
+            ->orderBy('d.data', 'desc')
+            ->get();
+
+        $diades = $result->toArray();
+        return view('cercador')->with('colles', $colles)->with('diades', $diades);//->with('castells', $castells)
     }
 
     public function create()

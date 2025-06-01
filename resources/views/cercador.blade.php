@@ -54,10 +54,10 @@
         foreach ($diades as $diada)
         {
             echo '<tr>';
-            echo    '<td>' . $diada['data'] . '</td>';
-            echo    '<td>' . $diada['diada'] . '</td>';
-            echo    '<td>' . $diada['poblacio'] . '</td>';
-            echo    '<td>' . '</td>';
+            echo    '<td>' . $diada->data . '</td>';
+            echo    '<td>' . $diada->diada . '</td>';
+            echo    '<td>' . $diada->poblacio . '</td>';
+            echo    '<td>' . $diada->resultats . '</td>';
             echo '</tr>';
         }
         ?>

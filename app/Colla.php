@@ -13,4 +13,8 @@ class Colla extends Model
     protected $attributes = [
         'sobrenom' => NULL,
     ];
+
+    public function diades(){
+        return $this->belongsToMany(Diada::class, 'diades_colles','id_colla','id_diada');
+    }
 }

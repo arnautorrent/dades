@@ -3,11 +3,10 @@
   <component name="WebServers">
     <option name="servers">
       <webServer id="2a474694-8faa-46e5-96ed-86f393bf871d" name="esperxats" url="http://dades.ccesperxats.cat">
-        <fileTransfer host="ftp.ccesperxats.cat" port="21">
+        <fileTransfer host="lhwp3300.webapps.net" port="21">
           <advancedOptions>
             <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
           </advancedOptions>
-          <option name="port" value="21" />
         </fileTransfer>
       </webServer>
     </option>
